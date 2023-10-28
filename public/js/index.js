@@ -4,7 +4,7 @@ function signForm() {
   const fullname = document.getElementById('fullname').value;
   const password = document.getElementById('password').value;
 
-  fetch(`http://localhost:${process.env.PORT}/signup`, {
+  fetch(`${process.env.RENDER_EXTERNAL_URL}/signup`, {
     method: "POST",
     body: JSON.stringify({
       fullname,
@@ -31,7 +31,7 @@ function codeForm() {
   const form = document.getElementById('form');
   const code = document.getElementById('code').value;
 
-  fetch(`http://localhost:${process.env.PORT}/verify`, {
+  fetch(`${process.env.RENDER_EXTERNAL_URL}/verify`, {
     method: "POST",
     body: JSON.stringify({
       code
