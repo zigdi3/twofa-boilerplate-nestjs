@@ -10,14 +10,12 @@ datasource db {
   url      = env("DATA_URI")
 }
 
-
-model User{
-
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  fullName String 
-  email String @unique
-  password String
-  authConfirmToken String?
-  isVerified Boolean?
-  createdAt DateTime @default(now())
+model User {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  fullName         String
+  email            String   @unique
+  password         String
+  authConfirmToken String
+  isVerified       Boolean?
+  createdAt        DateTime @default(now())
 }
