@@ -26,27 +26,26 @@ function signForm() {
       }
     })
 
-}
+  function codeForm() {
+    const form = document.getElementById('form');
+    const code = document.getElementById('code').value;
 
-function codeForm() {
-  const form = document.getElementById('form');
-  const code = document.getElementById('code').value;
-
-  fetch('https://twofa-example-api.onrender.com/verify', {
-    method: "POST",
-    body: JSON.stringify({
-      code
-    }),
-    headers: {
-      "Content-type": "application/json"
-    }
-  }).then(data => data.json())
-    .then(res => {
-      if (res.status === 400) {
-        alert(res.response)
-      } else {
-        alert("Your account has been verified, proceed to the signin page");
-        form.reset();
+    fetch('https://twofa-example-api.onrender.com/verify', {
+      method: "POST",
+      body: JSON.stringify({
+        code
+      }),
+      headers: {
+        "Content-type": "application/json"
       }
-    })
+    }).then(data => data.json())
+      .then(res => {
+        if (res.status === 400) {
+          alert(res.response)
+        } else {
+          alert("Your account has been verified, proceed to the signin page");
+          form.reset();
+        }
+      })
+  }
 }
