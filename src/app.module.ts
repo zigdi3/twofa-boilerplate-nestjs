@@ -1,3 +1,5 @@
+import { ApiEnvService } from './api-env.service';
+import { ApiEnvController } from './api-env.controller';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -41,7 +43,13 @@ import { join } from 'path';
     }),
 
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [
+    ApiEnvController,
+    AppController
+  ],
+  providers: [
+    ApiEnvService,
+    AppService
+  ],
 })
 export class AppModule { }

@@ -1,8 +1,8 @@
 {
   "name": "2fa-boilerplate-nestjs",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "0.1.1",
+  "description": "API resolve 2FA example",
+  "author": "zigdi3",
   "private": true,
   "license": "UNLICENSED",
   "type": "commonjs",
@@ -82,5 +82,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "engines": {
+    "node": "18.x.x"
   }
 }
