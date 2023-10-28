@@ -5,7 +5,7 @@ function signForm() {
   const fullname = document.getElementById('fullname').value;
   const password = document.getElementById('password').value;
 
-  fetch('http://twofa-example-api.onrender.com/signup', {
+  fetch('https://twofa-example-api.onrender.com/signup', {
     method: "POST",
     body: JSON.stringify({
       fullname,
@@ -32,7 +32,7 @@ function codeForm() {
   const form = document.getElementById('form');
   const code = document.getElementById('code').value;
 
-  fetch('http://twofa-example-api.onrender.com/verify', {
+  fetch('https://twofa-example-api.onrender.com/verify', {
     method: "POST",
     body: JSON.stringify({
       code
