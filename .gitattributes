@@ -1,4 +1,4 @@
 src/*.ts linguist-vendored=false
 test/*.ts linguist-vendored=false
-public/css/*.css linguist-vendored=true
+public/**/*.css linguist-vendored=true
 *.js linguist-vendored=false
