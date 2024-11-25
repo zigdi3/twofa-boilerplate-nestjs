@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "type": "commonjs",
   "scripts": {
-    "prep": "npm i -g pnpm && pnpm install --strict-peer-dependencies",
+    "prep": "rm -rf node_modules && npm i -g pnpm && pnpm install --strict-peer-dependencies --no-frozen-lockfile",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
