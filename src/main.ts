@@ -16,6 +16,14 @@ async function bootstrap() {
     console.log(err);
   });
 
+  const opt = {
+    origin: '*',
+    allowedHeaders: ['Content-Type', 'Accept','Autorization'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  };
+
+  app.enableCors(opt);
   await app.listen(port);
   console.log(`Application is running on: ${port}`);
   spinUp.onModuleInit();

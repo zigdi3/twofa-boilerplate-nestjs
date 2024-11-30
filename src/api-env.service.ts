@@ -12,6 +12,9 @@ export class ApiEnvService {
     if (key === 'EMAIL_PASS'
       || key === 'JWT_SECRET'
       || key === 'DB_PASSWORD'
+      || key === 'EMAIL_API'
+      || key === 'DB_USERNAME'
+      || key === 'DATA_URI'
     ) {
       return undefined;
     }

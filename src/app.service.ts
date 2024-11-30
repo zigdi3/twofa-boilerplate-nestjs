@@ -28,16 +28,16 @@ export class AppService {
   }
 
   async sendConfirmationEmail(user: any) {
-    const { email, fullname } = await user
-    await this.mailerService.sendMail({
+    const { email, fullName } = await user
+    const send = await this.mailerService.sendMail({
       to: email,
       subject: 'Welcome to 2FA App! Confirm Email',
       template: 'confirm',
       context: {
-        fullname,
+        fullName,
         code: this.code
       },
-    });
+    }  );
   }
 
   async signup(user: User): Promise<any> {
@@ -45,7 +45,7 @@ export class AppService {
       const salt = await bcrypt.genSalt();
       const hash = await bcrypt.hash(user.password, salt);
       const reqBody = {
-        fullname: user.fullName,
+        fullName: user.fullName,
         email: user.email,
         password: hash,
         authConfirmToken: "",

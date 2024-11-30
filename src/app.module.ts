@@ -19,37 +19,29 @@ import { join } from 'path';
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '300s' },
     }),
     MailerModule.forRoot({
       transport: {
-        service: "gmail",
-        secure: false,
+        service: 'SendGrid',
+
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
+          api_key: process.env.EMAIL_API,
         },
       },
       defaults: {
         from: '"No Reply" ${process.env.EMAIL_ROOT}',
       },
       template: {
-        dir: join(__dirname, "../views/email-templates"),
+        dir: join(__dirname, '../views/email-templates'),
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
         },
       },
     }),
-
   ],
-  controllers: [
-    ApiEnvController,
-    AppController
-  ],
-  providers: [
-    ApiEnvService,
-    AppService
-  ],
+  controllers: [ApiEnvController, AppController],
+  providers: [ApiEnvService, AppService],
 })
-export class AppModule { }
+export class AppModule {}

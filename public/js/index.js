@@ -2,18 +2,22 @@
 function signForm() {
   const form = document.getElementById('form');
   const email = document.getElementById('email').value;
-  const fullname = document.getElementById('fullname').value;
+  const fullName = document.getElementById('fullName').value;
   const password = document.getElementById('password').value;
 
-  fetch('https://twofa-example-api.onrender.com/signup', {
+  fetch('http://localhost:29291/signup', {
     method: "POST",
     body: JSON.stringify({
-      fullname,
+      fullName,
       email,
       password
     }),
     headers: {
-      "Content-type": "application/json"
+      "Content-type": "application/json",
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+      'Access-Control-Allow-Credentials': 'true', 
+
     }
   }).then(data => data.json())
     .then(res => {
@@ -30,13 +34,16 @@ function signForm() {
     const form = document.getElementById('form');
     const code = document.getElementById('code').value;
 
-    fetch('https://twofa-example-api.onrender.com/verify', {
+    fetch('http://localhost:29291/verify', {
       method: "POST",
       body: JSON.stringify({
         code
       }),
       headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+        'Access-Control-Allow-Credentials': 'true'
       }
     }).then(data => data.json())
       .then(res => {
