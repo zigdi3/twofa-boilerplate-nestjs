@@ -1,16 +1,16 @@
-import { ApiEnvService } from './api-env.service';
-import { ApiEnvController } from './api-env.controller';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
+import { ApiEnvController } from './api-env.controller';
+import { ApiEnvService } from './api-env.service';
 import { AppController } from './app.controller';
-import { MailerModule } from '@nestjs-modules/mailer';
+import { AppService } from './app.service';
 import { ormConfig } from './db/ormconfig';
 import { User } from './entity/app.entity';
-import { join } from 'path';
 
 @Module({
   imports: [
@@ -23,33 +23,25 @@ import { join } from 'path';
     }),
     MailerModule.forRoot({
       transport: {
-        service: "gmail",
+        service: 'SendGrid',
         secure: false,
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
+          user: process.env.APIKey,
         },
       },
       defaults: {
         from: '"No Reply" ${process.env.EMAIL_ROOT}',
       },
       template: {
-        dir: join(__dirname, "../views/email-templates"),
+        dir: join(__dirname, '../views/email-templates'),
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
         },
       },
     }),
-
   ],
-  controllers: [
-    ApiEnvController,
-    AppController
-  ],
-  providers: [
-    ApiEnvService,
-    AppService
-  ],
+  controllers: [ApiEnvController, AppController],
+  providers: [ApiEnvService, AppService],
 })
-export class AppModule { }
+export class AppModule {}

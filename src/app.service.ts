@@ -1,41 +1,46 @@
-import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm'
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nestjs-modules/mailer';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
+import { Repository } from 'typeorm';
 import { User } from './entity/app.entity';
 
 @Injectable()
 export class AppService {
   private code;
 
-  constructor(@InjectRepository(User) private userRepository: Repository<User>, private mailerService: MailerService) {
-    this.code = Math.floor(10000 + Math.random() * 90000).toString() as unknown as string;
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
+    private mailerService: MailerService
+  ) {
+    this.code = Math.floor(
+      10000 + Math.random() * 90000
+    ).toString() as unknown as string;
   }
 
   async sendConfirmedEmail(user: User) {
-    const { email, fullName } = user
+    const { email, fullName } = user;
     await this.mailerService.sendMail({
       to: email,
       subject: 'Welcome to 2FA App! Email Confirmed',
       template: 'confirmed',
       context: {
         fullName,
-        email
+        email,
       },
     });
   }
 
   async sendConfirmationEmail(user: any) {
-    const { email, fullname } = await user
+    const { email, fullname } = await user;
     await this.mailerService.sendMail({
       to: email,
       subject: 'Welcome to 2FA App! Confirm Email',
       template: 'confirm',
       context: {
         fullname,
-        code: this.code
+        code: this.code,
       },
     });
   }
@@ -48,11 +53,11 @@ export class AppService {
         fullname: user.fullName,
         email: user.email,
         password: hash,
-        authConfirmToken: "",
-      }
+        authConfirmToken: '',
+      };
       const newUser = this.userRepository.insert(reqBody);
       await this.sendConfirmationEmail(reqBody);
-      return true
+      return true;
     } catch (e) {
       return new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -62,8 +67,8 @@ export class AppService {
     try {
       const foundUser = await this.userRepository.findOne({
         where: {
-          email: user.email
-        }
+          email: user.email,
+        },
       });
       if (foundUser) {
         if (foundUser.isVerified) {
@@ -74,11 +79,20 @@ export class AppService {
             };
           }
         } else {
-          return new HttpException('Please verify your account', HttpStatus.UNAUTHORIZED)
+          return new HttpException(
+            'Please verify your account',
+            HttpStatus.UNAUTHORIZED
+          );
         }
-        return new HttpException('Incorrect username or password', HttpStatus.UNAUTHORIZED)
+        return new HttpException(
+          'Incorrect username or password',
+          HttpStatus.UNAUTHORIZED
+        );
       }
-      return new HttpException('Incorrect username or password', HttpStatus.UNAUTHORIZED)
+      return new HttpException(
+        'Incorrect username or password',
+        HttpStatus.UNAUTHORIZED
+      );
     } catch (e) {
       return new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -88,17 +102,23 @@ export class AppService {
     try {
       const user = await this.userRepository.findOne({
         where: {
-          authConfirmToken: code
-        }
+          authConfirmToken: code,
+        },
       });
       if (!user) {
-        return new HttpException('Verification code has expired or not found', HttpStatus.UNAUTHORIZED)
+        return new HttpException(
+          'Verification code has expired or not found',
+          HttpStatus.UNAUTHORIZED
+        );
       }
-      await this.userRepository.update({ authConfirmToken: user.authConfirmToken }, { isVerified: true, authConfirmToken: undefined })
-      await this.sendConfirmedEmail(user)
-      return true
+      await this.userRepository.update(
+        { authConfirmToken: user.authConfirmToken },
+        { isVerified: true, authConfirmToken: undefined }
+      );
+      await this.sendConfirmedEmail(user);
+      return true;
     } catch (e) {
-      return new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR)
+      return new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
