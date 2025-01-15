@@ -1,8 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-import { SpinUpService } from './config/infra/spinUp';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const port = process.env.PORT || 3001;
@@ -10,7 +9,7 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
-  const spinUp = new SpinUpService();
+  // const spinUp = new SpinUpService();
   // 👇️ handle uncaught exceptions
   process.on('uncaughtException', function (err) {
     console.log(err);
@@ -18,6 +17,6 @@ async function bootstrap() {
 
   await app.listen(port);
   console.log(`Application is running on: ${port}`);
-  spinUp.onModuleInit();
+  // spinUp.onModuleInit();
 }
 bootstrap();
